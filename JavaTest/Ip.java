@@ -38,7 +38,7 @@ public class Ip {
                 return false;
             }
             for (char ch : s.toCharArray()) {
-                if (!Character.isDigit(ch) && "0123456789abcdefABCDEF".contains(String.valueOf(ch))) {
+                if (!Character.isDigit(ch) && !"0123456789abcdefABCDEF".contains(String.valueOf(ch))) {
                     return false;
                 }
             }
@@ -60,7 +60,7 @@ public class Ip {
 
         for (String c : sp) {
 
-            if (c.length() < 1 || c.startsWith("0")) {
+            if (c.length() == 0 || c.length() > 1 && c.startsWith("0")) {
                 return false;
             }
             if (!isNotValidNumber(c)) {
