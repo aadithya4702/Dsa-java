@@ -1,0 +1,442 @@
+Two sum
+Longest substring without repeating 
+Valid parentheses 
+Maximum subarray 
+Best time to buy and sell stocks
+Rotate image
+Move zeros
+Rotate array for given times 
+Trapping rain water
+Spiral matrix
+
+1.Two Sum
+
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        Map<Integer,Integer> ans = new HashMap<>();
+
+   
+
+     for(int i=0;i<nums.length;i++){
+        if(ans.containsKey(target-nums[i])){
+            return new int[]{ans.get(target-nums[i]),i};
+        }
+        ans.put(nums[i],i);
+     }
+
+     return new int[]{0,0};
+    }
+}
+
+
+2.Longest substring without repeating
+
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+
+       ArrayList<Character> ans = new ArrayList<>();
+
+       int start=0;
+       int end =0;
+       int max=0;
+
+       while(end<s.length()){
+
+            if(ans.contains(s.charAt(end))){
+                ans.remove(Character.valueOf(s.charAt(start)));
+                start++;
+            }else{
+                ans.add(s.charAt(end));
+                end++;
+            }
+            max= Math.max(max,ans.size());
+       }
+       return max;
+    }
+}
+
+
+3.Valid parenthesis
+
+class Solution {
+    public boolean isValid(String s) {
+
+        Stack<Character> stk = new Stack<>();
+
+        for(char c : s.toCharArray()){
+            if(c == '[' || c=='{' || c=='('){
+                stk.push(c);
+            }else{
+                if(stk.isEmpty()){
+                    return false;
+                }
+            
+
+             char top = stk.peek();
+           
+            if((c == ')' && top == '(') || (c == ']' && top == '[') || (c == '}' && top == '{')){
+                stk.pop();
+            } else{
+                    return false;
+            }
+            }
+        }
+
+       return stk.isEmpty();
+        
+    }
+}
+
+
+4.Maximum subarray (Kadene’s algo)
+
+class Solution {
+    public int maxSubArray(int[] nums) {
+        int max = nums[0];
+        int total=nums[0];
+
+        for(int i=1;i<nums.length;i++){
+            max = Math.max(max+nums[i],nums[i]);
+            total = Math.max(total,max);
+        }
+        return total;
+    }
+}
+
+5.Best time to buy and sell stocks
+
+class Solution {
+    public int maxProfit(int[] prices) {
+
+        int profit=0;
+        int buy = prices[0];
+        for(int i=1;i<prices.length;i++){
+            if(prices[i]>buy){
+                profit  = Math.max(profit,prices[i]-buy);
+            }else{
+                buy = prices[i];
+            }
+        }
+        return profit;
+    }
+}
+
+
+6.Rotate Image
+
+class Solution {
+    public void rotate(int[][] matrix) {
+        
+
+        for(int i=0;i<matrix.length;i++){
+
+            for(int j=i+1;j<matrix[0].length;j++){
+
+                int temp = matrix[i][j];
+                matrix[i][j]=matrix[j][i];
+                matrix[j][i]=temp;
+            }
+        }
+
+        for(int i=0;i<matrix.length;i++){
+            int left = 0;
+            int right = matrix[i].length-1;
+            while(left<right){
+                 int temp = matrix[i][left];
+                matrix[i][left]=matrix[i][right];
+                matrix[i][right]=temp;
+                left++;
+                right--;
+            }
+        }
+
+    }
+}
+
+
+7.Move zeros
+
+
+class Solution {
+    public void moveZeroes(int[] nums) {
+        int count=0;
+
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]!=0){
+                nums[count++]=nums[i];
+            }
+        }
+        if(count<nums.length){
+            for(int i=count;i<nums.length;i++){
+                nums[i]=0;
+            }
+        }
+    }
+}
+
+
+8.Rotate Array
+
+class Solution {
+    public void rotate(int[] nums, int k) {
+        k = k % nums.length;
+        reverse(nums,0,nums.length-1);
+        reverse(nums,0,k-1);
+        reverse(nums,k,nums.length-1);
+        
+    }
+
+    public static void reverse(int[] nums,int start,int end){
+
+        while(start<end){
+            int temp = nums[start];
+            nums[start] = nums[end];
+            nums[end]=temp;
+            start++;
+            end--;
+        }
+
+    }
+}
+
+9.Container with most water
+
+class Solution {
+    public int maxArea(int[] height) {
+
+        int start =0;
+        int end=height.length-1;
+        int total =0;
+
+        while(start<end){
+
+            total = Math.max(total,(end-start)*Math.min(height[start],height[end]));
+            if(height[start]>height[end]){
+                end--;
+            }else{
+                start++;
+            }
+        }
+        return total;
+    }
+}
+
+10.Spiral Matrix
+
+class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+
+        int colStart =0;
+        int colEnd =matrix[0].length;
+        int rowStart =0;
+        int rowEnd = matrix.length;
+        ArrayList<Integer> ans = new ArrayList<>();
+        
+        while(colStart<colEnd && rowStart<rowEnd){
+            
+            for(int i=colStart;i<colEnd;i++){
+                ans.add(matrix[rowStart][i]);
+            }
+            rowStart++;
+            
+            for(int j=rowStart;j<rowEnd;j++){
+                ans.add(matrix[j][colEnd-1]);
+            }
+            colEnd--;
+            if (rowStart < rowEnd) {
+            for(int k=colEnd-1;k>=colStart;k--){
+                ans.add(matrix[rowEnd-1][k]);
+            }
+            rowEnd--;
+            }
+            if (colStart < colEnd) {
+            for(int l=rowEnd-1;l>=rowStart;l--){
+                ans.add(matrix[l][colStart]);
+            }
+            colStart++;
+            }
+            
+        }
+        return ans;
+        
+    }
+}
+
+11.Decode String
+
+
+
+class Solution{
+    static String decodedString(String s){
+        // code here
+        
+        Stack<StringBuilder> charStack = new Stack<>();
+        Stack<Integer> numStack = new Stack<>();
+        int num = 0;
+        StringBuilder curString =new StringBuilder();
+        
+        for(char c:s.toCharArray()){
+            
+            if(Character.isDigit(c)){
+                num = num*10+(c-'0');
+            }
+            else if(c=='['){
+                numStack.push(num);
+                charStack.push(curString);
+                curString = new StringBuilder();
+                num=0;
+            }else if(c==']'){
+                
+                int loop = numStack.pop();
+                StringBuilder dec = charStack.pop();
+                
+                for(int i=0;i<loop;i++){
+                    
+                    dec.append(curString);
+                }
+                
+                curString = dec;
+            }else{
+                curString.append(c);
+            }
+            
+            
+            
+        }
+        return curString.toString();
+    }
+    
+}
+
+
+12.String Compression
+
+class Solution {
+     public static int compress(char[] chars) {
+       
+       StringBuilder str = new StringBuilder();
+       char current = '0';
+       int count=1;
+
+       for(int i=0;i<chars.length;i++){
+            current=chars[i];
+            if(i<chars.length-1 && chars[i] == chars[i+1]){
+                count++;
+            }else{
+                str.append(current);
+                if(count>1){
+                    str.append(count);
+                }
+                count=1;
+            }
+
+
+       }
+
+       char[] strWrap = str.toString().toCharArray();
+
+       for(int j=0;j<strWrap.length;j++){
+        chars[j]=strWrap[j];
+       }
+
+       return strWrap.length;
+     }
+}
+
+Sure! Below is an example in Java demonstrating both fixed-size sliding window and variable-size sliding window techniques. I will also explain how these can be applied to common sliding window problems.
+1. Fixed-Size Sliding Window
+A fixed-size sliding window is a subarray of a fixed length that moves over the array by one element at a time.
+Problem: Find the maximum sum of any contiguous subarray of size k.
+Example Code (Fixed-Size Sliding Window):
+public class FixedSizeSlidingWindow {
+    public static int maxSum(int[] arr, int k) {
+        int n = arr.length;
+        
+        // Check if k is greater than the array length
+        if (n < k) {
+            System.out.println("Window size is greater than array length");
+            return -1;
+        }
+        
+        // Find the sum of the first window of size k
+        int windowSum = 0;
+        for (int i = 0; i < k; i++) {
+            windowSum += arr[i];
+        }
+        
+        int maxSum = windowSum;
+        
+        // Slide the window
+        for (int i = k; i < n; i++) {
+            windowSum += arr[i] - arr[i - k];  // Add the next element and remove the previous element
+            maxSum = Math.max(maxSum, windowSum); // Update the max sum
+        }
+        
+        return maxSum;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {2, 1, 5, 1, 3, 2};
+        int k = 3;
+        System.out.println("Maximum sum of subarray of size " + k + ": " + maxSum(arr, k));
+    }
+}
+
+Explanation:
+We calculate the sum of the first window of size k (first k elements).
+Then, as we move the window one position to the right, we subtract the element that is left behind and add the new element that enters the window.
+We keep track of the maximum sum encountered during this process.
+2. Variable-Size Sliding Window
+A variable-size sliding window dynamically adjusts its size based on certain conditions, typically using two pointers (start and end).
+Problem: Find the length of the longest subarray with a sum less than or equal to a given number s.
+Example Code (Variable-Size Sliding Window):
+public class VariableSizeSlidingWindow {
+    public static int longestSubarrayWithSumLessThanOrEqual(int[] arr, int s) {
+        int n = arr.length;
+        int start = 0;
+        int end = 0;
+        int currentSum = 0;
+        int maxLength = 0;
+
+        while (end < n) {
+            // Add the current element to the window
+            currentSum += arr[end];
+            
+            // Shrink the window if the current sum exceeds the limit
+            while (currentSum > s && start <= end) {
+                currentSum -= arr[start];
+                start++;
+            }
+            
+            // Update the maximum length of the window that satisfies the condition
+            if (currentSum <= s) {
+                maxLength = Math.max(maxLength, end - start + 1);
+            }
+            
+            // Move the end pointer to extend the window
+            end++;
+        }
+
+        return maxLength;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {1, 2, 3, 4, 5};
+        int s = 11;
+        System.out.println("Longest subarray with sum <= " + s + ": " + longestSubarrayWithSumLessThanOrEqual(arr, s));
+    }
+}
+
+Explanation:
+The end pointer extends the window by adding elements to the sum.
+If the sum exceeds s, the start pointer moves forward to shrink the window until the sum is less than or equal to s.
+We keep track of the maximum length of the valid window during the process.
+Key Differences:
+Fixed-Size Window: The window has a fixed size (k), and the challenge is to compute the result (e.g., sum, max value) efficiently as the window slides.
+Variable-Size Window: The window adjusts its size dynamically based on certain conditions (e.g., sum limit), and both pointers (start and end) are used to manipulate the window.
+
+Example Applications:
+Fixed-Size Window: This approach is useful for problems like finding the maximum sum subarray of a fixed length, sliding median, or moving average.
+Variable-Size Window: It is commonly used in problems that require finding subarrays with a sum less than or equal to a given value, longest subarrays with unique characters, or problems involving finding subarrays that satisfy certain conditions.
+With these examples, you should be able to tackle a variety of sliding window problems! Let me know if you need more examples or explanations.
+
