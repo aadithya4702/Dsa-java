@@ -5,9 +5,40 @@ import java.util.Stack;
 public class ValidExpression {
 
     public static void main(String[] args) {
-        String s = "1 + 2)";
+        String s = "(3+5*(2-1)";
 
         System.out.println(checkExpValid(s));
+        System.out.println(ValidExpressionStep(s));
+    }
+
+    private static boolean ValidExpressionStep(String s) {
+        String maString = "[0-9+\\-*/() ]+";
+
+        if (!s.matches(maString)) {
+            return false;
+
+        }
+        if (!isParenthesisBal(s)) {
+            return false;
+        }
+        return true;
+    }
+
+    private static boolean isParenthesisBal(String s) {
+        Stack<Character> c = new Stack<>();
+
+        for (char ch : s.toCharArray()) {
+
+            if (ch == '(') {
+                c.push(ch);
+            } else if (ch == ')') {
+                if (c.isEmpty()) {
+                    return false;
+                }
+                c.pop();
+            }
+        }
+        return c.isEmpty();
     }
 
     private static boolean checkExpValid(String s) {
