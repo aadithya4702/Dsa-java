@@ -1,3 +1,5 @@
+package JavaTest;
+
 import java.util.*;
 
 class Taxi {
@@ -66,13 +68,14 @@ public class CallTaxiBookingApp {
         while (true) {
             System.out.println("Enter booking details (Pickup, Drop, Time) or Q to quit:");
             String input = scanner.nextLine();
-            if (input.equalsIgnoreCase("Q")) break;
-            
+            if (input.equalsIgnoreCase("Q"))
+                break;
+
             String[] details = input.split(" ");
             char pickup = details[0].charAt(0);
             char drop = details[1].charAt(0);
             int time = Integer.parseInt(details[2]);
-            
+
             service.bookTaxi(pickup, drop, time);
         }
         scanner.close();
