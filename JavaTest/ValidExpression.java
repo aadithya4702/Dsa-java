@@ -43,7 +43,7 @@ public class ValidExpression {
 
     private static boolean checkExpValid(String s) {
         Stack<Character> stk = new Stack<>();
-        boolean lastWasOperator = true; // To check if an operator appears at the beginning
+        boolean nextNotToBeOperator = true; // To check if an operator appears at the beginning
 
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
@@ -51,20 +51,20 @@ public class ValidExpression {
             // Check Parentheses
             if (c == '(') {
                 stk.push(c);
-                lastWasOperator = true; // '(' should be followed by a number or another '('
+                nextNotToBeOperator = true; // '(' should be followed by a number or another '('
             } else if (c == ')') {
                 if (stk.isEmpty() || stk.peek() != '(') {
                     return false; // No matching '('
                 }
                 stk.pop();
-                lastWasOperator = false; // ')' should be followed by an operator or another ')'
+                nextNotToBeOperator = false; // ')' should be followed by an operator or another ')'
             }
 
             // Check Operators
             if (c == '*' || c == '/' || c == '-' || c == '+') {
                 // If operator is at the start or right after an opening parenthesis, it's
                 // invalid
-                if (lastWasOperator) {
+                if (nextNotToBeOperator) {
                     return false;
                 }
 
@@ -73,13 +73,13 @@ public class ValidExpression {
                     return false;
                 }
 
-                lastWasOperator = true;
+                nextNotToBeOperator = true;
             } else if (Character.isDigit(c)) {
-                lastWasOperator = false; // Number should be followed by operator or ')'
+                nextNotToBeOperator = false; // Number should be followed by operator or ')'
             }
         }
 
         // Stack should be empty at the end (ensures all '(' are matched)
-        return stk.isEmpty() && !lastWasOperator;
+        return stk.isEmpty() && !nextNotToBeOperator;
     }
 }
